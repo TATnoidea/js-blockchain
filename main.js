@@ -1,11 +1,11 @@
-const SHA256 = REQUIRE('crypto-js/sha256');
+const SHA256 = require('crypto-js/sha256');
 
 class Block {
-  constructor(timestamp, data) {
-    this.index = 0; // block位于chain的位置
+  constructor(index, timestamp, data, previousHash) {
+    this.index = index; // block位于chain的位置
     this.timestamp = timestamp;
     this.data = data;
-    this.previousHash = '0';
+    this.previousHash = previousHash;
     this.hash = this.calculateHash();
     this.nonce = 0;
   }
@@ -23,7 +23,7 @@ class Block {
 class BlockChain {
   // 构造函数实例化blockchain
   constructor() {
-    this.chain = [this.createGenesis];
+    this.chain = [this.createGenesis()];
   }
   // 创建chain的每一个第一个block
   createGenesis() {
@@ -37,6 +37,7 @@ class BlockChain {
   addBlock(newBlock) {
     newBlock.previousHash = this.latestBlock().hash;
     newBlock.hash = newBlock.calculateHash();
+    newBlock.index = this.latestBlock().index + 1;
     this.chain.push(newBlock);
   }
 
@@ -57,3 +58,10 @@ class BlockChain {
     return true;
   }
 }
+
+let jsChain = new BlockChain();
+jsChain.addBlock(new Block("6/20/2018", { amount: 5 }));
+jsChain.addBlock(new Block("6/21/2018", { amount: 10 }));
+
+console.log(JSON.stringify(jsChain, null, 4));
+console.log('Is blockchain valid? ' + jsChain.checkValid());
