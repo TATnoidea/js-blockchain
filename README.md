@@ -1,4 +1,10 @@
 # js-blockchain
+运行方法：
+```
+npm install
+
+node main.js
+```
 
 参照medium上的Learn & Build a Javascript Blockchain使用js制作的blockchain。
 
